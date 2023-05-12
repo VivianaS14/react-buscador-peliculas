@@ -8,8 +8,11 @@ API a usar:
 
 Requerimientos:
 
-- Necesita mostrar un input para buscar la película y un botón para buscar.
-- Lista las películas encontradas y muestra el titulo, año y poster.
+✅ Necesita mostrar un input para buscar la película y un botón para buscar.
+
+✅ Lista las películas encontradas y muestra el titulo, año y poster.
+
+- Que el formulario funcione.
 - Haz que las películas se muestren en un grid responsive.
 
 Primera iteración:
