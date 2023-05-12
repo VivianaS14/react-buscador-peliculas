@@ -14,28 +14,26 @@ function App() {
   };
 
   const handleChange = (e) => {
-    setQuery(e.target.value);
-  };
+    const newQuery = e.target.value;
+    setQuery(newQuery);
 
-  // validaciones con useEffect
-  useEffect(() => {
-    if (query === "") {
+    if (newQuery === "") {
       setError("No se puede buscar uns película vacía");
       return;
     }
 
-    if (query.match(/^d+$/)) {
+    if (newQuery.match(/^d+$/)) {
       setError("No se puede buscar una película con un número");
       return;
     }
 
-    if (query.length < 3) {
+    if (newQuery.length < 3) {
       setError("La búsqueda debe tener al menos 3 caracteres");
       return;
     }
 
     setError(null);
-  }, [query]);
+  };
 
   return (
     <div className="page">
