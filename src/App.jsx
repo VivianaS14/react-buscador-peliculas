@@ -1,41 +1,20 @@
-import { useEffect, useRef, useState } from "react";
 import { Movies } from "./components/movies";
 import { useMovies } from "./hooks/useMovies";
+import { useSearch } from "./hooks/useSearch";
 import "./App.css";
 
 function App() {
   const { movies } = useMovies();
-  const [query, setQuery] = useState("");
-  const [error, setError] = useState(null);
+  const { search, updateSearch, error } = useSearch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ query });
+    console.log({ search });
   };
 
   const handleChange = (e) => {
-    const newQuery = e.target.value;
-    setQuery(newQuery);
+    updateSearch(e.target.value);
   };
-
-  useEffect(() => {
-    if (query === "") {
-      setError("No se puede buscar uns película vacía");
-      return;
-    }
-
-    if (query.match(/^d+$/)) {
-      setError("No se puede buscar una película con un número");
-      return;
-    }
-
-    if (query.length < 3) {
-      setError("La búsqueda debe tener al menos 3 caracteres");
-      return;
-    }
-
-    setError(null);
-  }, [query]);
 
   return (
     <div className="page">
@@ -45,7 +24,7 @@ function App() {
           <input
             type="search"
             name="query"
-            value={query}
+            value={search}
             onChange={handleChange}
             placeholder="Avengers, Star Wars, The Matrix"
             style={{
