@@ -6,6 +6,16 @@ import { Movies } from "./components/movies";
 function App() {
   const movies = withResults.Search;
 
+  // evitar que un componente utilice el contrato de la API
+  // si la API llega a cambiar es mucho mas accesible cambiarlo
+  // aquí que en cada componente que se use
+  const mappedMovies = movies.map((movie) => ({
+    id: movie.imdbID,
+    title: movie.Title,
+    year: movie.Year,
+    poster: movie.Poster,
+  }));
+
   return (
     <div className="page">
       <header>
@@ -17,7 +27,7 @@ function App() {
       </header>
 
       <main>
-        <Movies movies={movies} />
+        <Movies movies={mappedMovies} />
       </main>
     </div>
   );
