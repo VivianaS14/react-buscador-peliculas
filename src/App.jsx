@@ -1,32 +1,57 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Movies } from "./components/movies";
 import { useMovies } from "./hooks/useMovies";
 import "./App.css";
 
 function App() {
   const { movies } = useMovies();
-  // useRef() te permite crear una referencia mutable que PERSISTE durante todo el ciclo de vida de tu componente (entre renderizados)
-  // util para guardar cualquier valor que puedas mutar, que cada vez que cambia NO se renderiza/dispara otra vez el componente
-  // util para guardar referencias del DOM
-  //const inputRef = useRef();
+  const [query, setQuery] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // por ej si hay mas de 10 ref/inputs
-    const { query } = Object.fromEntries(new FormData(e.target));
-    // const fields = new FormData(e.target);
-    // const query = fields.get("query");
-    console.log(query);
+    console.log({ query });
   };
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  // validaciones con useEffect
+  useEffect(() => {
+    if (query === "") {
+      setError("No se puede buscar uns película vacía");
+      return;
+    }
+
+    if (query.match(/^d+$/)) {
+      setError("No se puede buscar una película con un número");
+      return;
+    }
+
+    if (query.length < 3) {
+      setError("La búsqueda debe tener al menos 3 caracteres");
+      return;
+    }
+
+    setError(null);
+  }, [query]);
 
   return (
     <div className="page">
       <header>
         <h1>Buscador de Películas</h1>
         <form className="form" onSubmit={handleSubmit}>
-          <input name="query" placeholder="Avengers, Star Wars, The Matrix" />
+          <input
+            type="search"
+            name="query"
+            value={query}
+            onChange={handleChange}
+            placeholder="Avengers, Star Wars, The Matrix"
+          />
           <button type="submit">Buscar</button>
         </form>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </header>
 
       <main>
