@@ -12,8 +12,10 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const fields = new FormData(e.target);
-    const query = fields.get("query");
+    // por ej si hay mas de 10 ref/inputs
+    const { query } = Object.fromEntries(new FormData(e.target));
+    // const fields = new FormData(e.target);
+    // const query = fields.get("query");
     console.log(query);
   };
 
