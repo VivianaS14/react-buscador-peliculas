@@ -25,3 +25,11 @@ Primera iteración:
 ✅ Haz que la búsqueda se haga automáticamente al escribir.
 
 ✅ Evita que se haga la búsqueda continuamente al escribir.
+
+### Busca películas y ordena alfabéticamente
+
+Busca películas por su nombre:
+![Busca por nombre](src/assets/image1.png)
+
+Ordena tu búsqueda alfabéticamente
+![Ordena alfabéticamente](src/assets/image2.png)
