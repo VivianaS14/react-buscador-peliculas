@@ -1,18 +1,34 @@
-import withResults from "../mocks/with-results.json";
-//import withoutResults from "../mocks/no-results.json";
+import { useState } from "react";
+//import withResults from "../mocks/with-results.json";
+import withoutResults from "../mocks/no-results.json";
 
-export function useMovies() {
-  const movies = withResults.Search;
+export function useMovies({ search }) {
+  const [responserMovies, setResponseMovies] = useState([]);
 
-  // evitar que un componente utilice el contrato de la API
-  // si la API llega a cambiar es mucho mas accesible cambiarlo
-  // aquí que en cada componente que se use
-  const mappedMovies = movies.map((movie) => ({
+  const movies = responserMovies.Search;
+
+  const mappedMovies = movies?.map((movie) => ({
     id: movie.imdbID,
     title: movie.Title,
     year: movie.Year,
     poster: movie.Poster,
   }));
 
-  return { movies: mappedMovies };
+  const getMovies = () => {
+    if (search) {
+      // setResponseMovies(withResults);
+      fetch(
+        `https://www.omdbapi.com/?apikey=${
+          import.meta.env.VITE_API_KEY
+        }&s=${search}`
+      )
+        .then((response) => response.json())
+        .then((json) => setResponseMovies(json))
+        .catch((error) => console.error(error));
+    } else {
+      setResponseMovies(withoutResults);
+    }
+  };
+
+  return { movies: mappedMovies, getMovies };
 }
