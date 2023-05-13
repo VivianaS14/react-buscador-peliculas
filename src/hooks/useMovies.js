@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { searchMovies } from "../services/movies";
 
 export function useMovies({ search, sort }) {
@@ -7,11 +7,11 @@ export function useMovies({ search, sort }) {
   const [error, setError] = useState(null);
   const previousSearch = useRef(search);
 
-  // useMemo -> memoriza un valor para no tener que volverlo a calcular dependiendo de unas dependencias
-  const getMovies = useMemo(() => {
+  // useCallback -> usa useMemo por debajo pero memoriza solo funciones, solo simplifica la sintaxis para no usar un callback
+  const getMovies = useCallback(
     // solo se genera una vez la función
     // y se va a crear solamente por el search del parámetro
-    return async ({ search }) => {
+    async ({ search }) => {
       if (search === previousSearch.current) return;
 
       try {
@@ -25,9 +25,11 @@ export function useMovies({ search, sort }) {
       } finally {
         setLoading(false);
       }
-    };
-  }, []);
+    },
+    []
+  );
 
+  // useMemo -> memoriza un valor para no tener que volverlo a calcular dependiendo de unas dependencias
   // ordena películas por nombre
   const sortMovies = useMemo(
     // aunque cambie el search, al no ser parte de sus dependencias no necesita la función del memo

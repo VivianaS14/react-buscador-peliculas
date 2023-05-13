@@ -16,7 +16,9 @@ function App() {
   };
 
   const handleChange = (e) => {
-    updateSearch(e.target.value);
+    const newSearch = e.target.value;
+    updateSearch(newSearch);
+    getMovies({ search: newSearch });
   };
 
   const handleSort = () => {
