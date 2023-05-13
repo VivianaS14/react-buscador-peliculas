@@ -12,8 +12,11 @@ Requerimientos:
 
 ✅ Lista las películas encontradas y muestra el titulo, año y poster.
 
-- Que el formulario funcione.
-- Haz que las películas se muestren en un grid responsive.
+✅ Que el formulario funcione.
+
+✅ Haz que las películas se muestren en un grid responsive.
+
+- Hacer el fetching de datos a la API.
 
 Primera iteración:
 
