@@ -7,24 +7,28 @@ export function useMovies({ search, sort }) {
   const [error, setError] = useState(null);
   const previousSearch = useRef(search);
 
-  const getMovies = async () => {
-    if (search === previousSearch.current) return;
+  // useMemo -> memoriza un valor para no tener que volverlo a calcular dependiendo de unas dependencias
+  const getMovies = useMemo(() => {
+    // solo se genera una vez la función
+    // y se va a crear solamente por el search del parámetro
+    return async ({ search }) => {
+      if (search === previousSearch.current) return;
 
-    try {
-      setLoading(true);
-      setError(null);
-      previousSearch.current = search;
-      const newMovies = await searchMovies({ search });
-      setMovies(newMovies);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      try {
+        setLoading(true);
+        setError(null);
+        previousSearch.current = search;
+        const newMovies = await searchMovies({ search });
+        setMovies(newMovies);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  }, []);
 
   // ordena películas por nombre
-  // useMemo -> memoriza un valor para no tener que volverlo a calcular dependiendo de unas dependencias
   const sortMovies = useMemo(
     // aunque cambie el search, al no ser parte de sus dependencias no necesita la función del memo
     () =>
