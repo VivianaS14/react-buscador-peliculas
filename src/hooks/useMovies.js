@@ -1,34 +1,23 @@
 import { useState } from "react";
-//import withResults from "../mocks/with-results.json";
-import withoutResults from "../mocks/no-results.json";
+import { searchMovies } from "../services/movies";
 
 export function useMovies({ search }) {
-  const [responserMovies, setResponseMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const movies = responserMovies.Search;
-
-  const mappedMovies = movies?.map((movie) => ({
-    id: movie.imdbID,
-    title: movie.Title,
-    year: movie.Year,
-    poster: movie.Poster,
-  }));
-
-  const getMovies = () => {
-    if (search) {
-      // setResponseMovies(withResults);
-      fetch(
-        `https://www.omdbapi.com/?apikey=${
-          import.meta.env.VITE_API_KEY
-        }&s=${search}`
-      )
-        .then((response) => response.json())
-        .then((json) => setResponseMovies(json))
-        .catch((error) => console.error(error));
-    } else {
-      setResponseMovies(withoutResults);
+  const getMovies = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const newMovies = await searchMovies({ search });
+      setMovies(newMovies);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { movies: mappedMovies, getMovies };
+  return { movies, getMovies, loading, error };
 }
